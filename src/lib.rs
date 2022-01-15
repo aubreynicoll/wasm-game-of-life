@@ -1,5 +1,6 @@
 mod utils;
 
+use js_sys::Math;
 use wasm_bindgen::prelude::*;
 
 // When the `wee_alloc` feature is enabled, use `wee_alloc` as the global
@@ -30,7 +31,7 @@ impl Universe {
         let height = 64;
         let cells = (0..width * height)
             .map(|_| {
-                if rand::random::<f64>() < 0.5 {
+                if Math::random() < 0.5 {
                     Cell::Alive
                 } else {
                     Cell::Dead
