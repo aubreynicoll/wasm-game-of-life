@@ -1,5 +1,6 @@
 mod utils;
 
+use js_sys::Math;
 use wasm_bindgen::prelude::*;
 
 extern crate web_sys;
@@ -43,12 +44,23 @@ pub struct Universe {
 
 #[wasm_bindgen]
 impl Universe {
-    pub fn new() -> Universe {
+    pub fn new(random: bool) -> Universe {
         utils::set_panic_hook();
 
         let width = 64;
         let height = 64;
-        let cells = (0..width * height).map(|_| Cell::Dead).collect();
+        let cells = match random {
+            true => (0..width * height)
+                .map(|_| {
+                    if Math::random() < 0.5 {
+                        Cell::Dead
+                    } else {
+                        Cell::Alive
+                    }
+                })
+                .collect(),
+            false => (0..width * height).map(|_| Cell::Dead).collect(),
+        };
 
         Universe {
             width,
